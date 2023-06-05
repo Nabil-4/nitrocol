@@ -67,7 +67,6 @@ if ($_POST) {
     foreach ($_POST as $key => $value) {
         ${$key} = $value;
         if (empty($value)) {
-            if ($key == "photo") continue;
             $error = true;
             $msg_error .= "<br>". $key;
         }
@@ -86,7 +85,6 @@ if ($_POST) {
                img = '$img'
                WHERE id = '$id'
                LIMIT 1
-
         ";
 
         $sth = $dbh ->query($sql);
