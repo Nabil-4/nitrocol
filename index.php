@@ -19,15 +19,20 @@ if ($_POST) {
     } else {
         $sql ="SELECT * FROM utilisateur
         WHERE mdp = MD5('$password')
+        AND username = '$username'
         ";
 
         $sth = $dbh ->query($sql);
 
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-        $_SESSION['user'] = $result[0]['id'];
-        $_SESSION['admin'] = $result[0]['admin'];
-        header('location:admin.php');         
+        if (!empty($result)) {
+            $_SESSION['user'] = $result[0]['id'];
+            $_SESSION['admin'] = $result[0]['admin'];
+            header('location:admin.php'); 
+        } else {
+            echo 'erreur "username" ou "mot de passe"';
+        }      
     }
 }
 
