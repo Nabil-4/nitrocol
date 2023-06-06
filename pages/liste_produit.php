@@ -1,4 +1,5 @@
-<?php session_start()?>
+<?php session_start();
+ob_start()?>
 
 <?php if($_SESSION['admin'] =="oui"): ?>
         
@@ -60,6 +61,7 @@
                         <th><?= $prix ?></th>
                         <th><?= $img ?></th>
                         <th>Modification</th>
+                        <th>Supprimer</th>
                     </tr>
                 </thead>
                 <?php endif ?>
@@ -77,6 +79,7 @@
                         <td><?= $prix ?></td>
                         <td><img src="../upload/<?= $img ?>" alt="<?= $img ?>" style="max-width:300px"></td>
                         <td><a href="liste_produit.php?modif=<?= $id ?>">Modifier</a></td>
+                        <td><a href="liste_produit.php?suppr=<?= $id ?>">X</a></td>
                     </tr>
                 </tbody>  
         <?php endforeach ?>
@@ -92,6 +95,26 @@
             <?php if ($_GET['confirm'] == "oui") {
                 $_SESSION['modif-produit'] = $modif_id;
                 header('location:modif_produit.php');
+            }?>
+        <?php endif ?>
+    <?php endif ?>
+
+    <?php if(isset($_GET['suppr'])): ?>
+        <?php $suppr_id = $_GET['suppr'] ?>
+        <span>Supprimer le Produit</span>
+        <span><a href="liste_produit.php">NON</a></span>
+        <span><a href="liste_produit.php?suppr=<?= $suppr_id ?>&confirm=oui">OUI</a></span>
+
+        <?php if(isset($_GET['confirm'])): ?>
+            <?php if ($_GET['confirm'] == "oui") {
+
+                $sql = "DELETE FROM produit
+                        WHERE id = $suppr_id
+                ";
+
+                $sth = $dbh ->query($sql);
+
+                header('location:liste_produit.php');
             }?>
         <?php endif ?>
     <?php endif ?>
